@@ -4,10 +4,10 @@ Dataset source: https://www.mysqltutorial.org/mysql-sample-database.aspx
 The objective of the exercise is to analyse the perform an analysis of the performance 
 of the company through answering the following questions:
 
-1. Which country has the most sales?
-2. Which period of the year receives the most sales?
+1. Which country has generated the most revenue?
+2. Which period of the year receives the most revenue?
 3. Which company has the most orders?
-4. Who was the salesperson that had the most sales?
+4. Who is the sales person that the most revenue ?
 5. Which product line has the highest revenue?
 									
 */
@@ -15,11 +15,15 @@ of the company through answering the following questions:
 
 USE classicmodels;
 
+#Data exploration
+
 SELECT MAX(orderDate), MIN(orderDate)
 FROM
 orders;
 
-# Which country has the most sales?
+
+
+# Which country has the most revenue?
 
 SELECT 
 country, (od.quantityOrdered * od.priceEach) AS totalPrice
@@ -35,7 +39,7 @@ ORDER BY
 totalPrice DESC;
 
 
-# Which period of the year receives the most sales?
+# Which period of the year receives the most revenue?
 
 SELECT MONTH(o.orderDate) AS dateMonth ,SUM(od.quantityOrdered * od.priceEach) AS totalPrice
 FROM
@@ -48,7 +52,7 @@ ORDER BY
 MONTH(o.orderDate) DESC;
 
 
-# Which country has the most orders?
+# Which country has generated the most orders?
 
 SELECT
 c.country, od.quantityOrdered
@@ -64,7 +68,7 @@ ORDER BY
 od.quantityOrdered DESC;
 
 
-# Who was the sales person that has the most sales?
+# Who is the sales person that has generated the most revenue?
 
 SELECT CONCAT(e.firstName,' ',e.lastName) AS salesPerson,
 		(od.quantityOrdered * od.priceEach) AS totalPrice
@@ -98,7 +102,7 @@ Order By
 # Preparing dataset for visualization in Looker Studio
 
 SELECT 	c.customerName, c.city, c.country, o.orderDate, p.productLine,
-		od.quantityOrdered, od.priceEach, (od.quantityOrdered * od.priceEach) AS totalPrice,
+		od.quantityOrdered, od.priceEach, (od.quantityOrdered * od.priceEach) AS revenue,
         CONCAT(e.firstName,' ',e.lastName) AS salesPerson
 	
 FROM 
